@@ -3,11 +3,13 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
 import {SignInScreen} from './screens';
+import {SignUpScreen} from './screens';
 import {HomeScreen} from './screens';
 
 const AppMainRoute = createStackNavigator(
   {
     SignIn: SignInScreen,
+    SignUp: SignUpScreen,
     Home: HomeScreen,
   },
   {

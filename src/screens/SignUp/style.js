@@ -65,7 +65,7 @@ export const Line = styled.View`
   margin-top: 34.73px;
 `;
 
-export const NewAccountText = styled.Text`
+export const AccountText = styled.Text`
   text-align: left;
   font-size: ${({theme}) => theme.fontSize};
   font-family: ${({theme}) => theme.fontFamily.medium};
@@ -74,7 +74,7 @@ export const NewAccountText = styled.Text`
   opacity: 1;
 `;
 
-export const SingUpText = styled.Text`
+export const SingInText = styled.Text`
   text-align: left;
   font-size: ${({theme}) => theme.fontSize};
   font-family: ${({theme}) => theme.fontFamily.bold};

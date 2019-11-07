@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-community/async-storage';
-import {Alert} from 'react-native';
 import {
   StyledScrollView,
   Container,
@@ -10,26 +8,30 @@ import {
   Input,
   ActionContainer,
   Line,
-  NewAccountText,
-  SingUpText,
+  AccountText,
+  SingInText,
   Logo,
   LogoContainer,
 } from './style';
 import {StatusBar, Button, SocialButton} from '../../components';
 import {CloseIcon} from '../../assets/icon';
-import api from '../../services/api';
 
-export default class SignIn extends Component {
+export default class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
       email: '',
       password: '',
     };
   }
 
   setVariable(text, field) {
-    if (field === 'email') {
+    if (field === 'name') {
+      this.setState({
+        name: text,
+      });
+    } else if (field === 'email') {
       this.setState({
         email: text,
       });
@@ -39,45 +41,6 @@ export default class SignIn extends Component {
       });
     }
   }
-
-  storeData = async (email, pass) => {
-    if (this.state.email === '') {
-      Alert.alert('Atenção', 'Por favor preencha o campo email');
-    } else if (this.state.pass === '') {
-      Alert.alert('Atenção', 'Por favor preencha o campo senha');
-    } else {
-      let url = api.BASE_URL + api.LOGIN;
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          user: {
-            email: this.state.email,
-            password: this.state.pass,
-          },
-        }),
-      })
-        .then(response => response.json())
-        .then(response => {
-          let token = JSON.stringify(response.token);
-
-          AsyncStorage.setItem('token', token);
-
-          console.log(response);
-          this.props.navigation.navigate('Home');
-        })
-        .catch(() => {
-          this.setState({
-            show: false,
-          });
-          Alert.alert('Atenção', 'senha incorreta');
-        })
-        .done();
-    }
-  };
 
   render() {
     return (
@@ -93,7 +56,13 @@ export default class SignIn extends Component {
             </LogoContainer>
             <InputContainer>
               <Input
-                underlineColorAndroid="transparent"
+                placeholder="Nome"
+                onChangeText={text => this.setVariable(text, 'name')}
+              />
+            </InputContainer>
+
+            <InputContainer>
+              <Input
                 placeholder="Email"
                 onChangeText={text => this.setVariable(text, 'email')}
               />
@@ -101,15 +70,14 @@ export default class SignIn extends Component {
 
             <InputContainer>
               <Input
-                underlineColorAndroid="transparent"
                 placeholder="Password"
                 secureTextEntry={true}
                 onChangeText={text => this.setVariable(text, 'password')}
               />
             </InputContainer>
             <ActionContainer>
-              <TouchableOpacity onPress={() => this.storeData()}>
-                <Button title="Login" />
+              <TouchableOpacity>
+                <Button title="Criar conta" />
               </TouchableOpacity>
               <TouchableOpacity>
                 <SocialButton type="facebook" />
@@ -120,10 +88,10 @@ export default class SignIn extends Component {
             </ActionContainer>
             <Line />
             <ActionContainer>
-              <NewAccountText>Nao possui conta?</NewAccountText>
+              <AccountText>Já tenho uma conta</AccountText>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('SingUp')}>
-                <SingUpText>Cadastrar</SingUpText>
+                onPress={() => this.props.navigation.navigate('SingIn')}>
+                <SingInText>Login</SingInText>
               </TouchableOpacity>
             </ActionContainer>
           </StyledScrollView>
